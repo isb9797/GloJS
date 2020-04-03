@@ -1,22 +1,13 @@
 "use strict";
-//Урок 5
+//Урок 7
 
 let isNumber = n => {
   return !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
 };
 
 let money; //Доход за месяц
-let income = "Фриланс"; //Дополнительный доход
-let addExpenses = prompt(
-  "Перечислите возможные расходы за рассчитываемый переод через запятую",
-  "ТВ, Интернет, Плюшки"
-); //Расходы
 
-let deposit = confirm("Есть ли у вас депозит в банке?"); //Депозит
-let mission = 1000000; //Сколько накопить хочу (Да я амбициозный засранец)
-let period = 12; //За какое время
-let expenses = [];
-let itemMonthExpenses = [];
+//let expenses = [];
 
 let start = () => {
   do {
@@ -25,79 +16,84 @@ let start = () => {
 };
 start();
 
-const showTypeOf = (a, b, c) => {
-  let arr = [typeof a, typeof b, typeof c];
-  return arr;
-};
+let appData = {
+  income: {},
+  budget: money,
+  budgetDay: 0,
+  budgetMonth: 0,
+  expensesMonth: 0,
+  addIncome: [],
+  expenses: {},
+  addExpenses: [],
+  deposit: false,
+  mission: 1000000,
+  period: 12,
+  asking: function() {
+    let addExpenses = prompt(
+      "Перечислите возможные расходы за рассчитываемый переод через запятую",
+      "ТВ, Интернет, Плюшки"
+    ); //Расходы
+    appData.addExpenses = addExpenses.toLowerCase().split(", ");
+    appData.deposit = confirm("Есть ли у вас депозит в банке?"); //Депозит
+    let expensesKey;
+    let itemMonthExpenses = [];
+    for (let i = 0; i < 2; i++) {
+      expensesKey = prompt("Введите обязательную статью расходов", "Кредит");
 
-//Отработал тернарный оператор условия (В жизни он таким длинным не будет :) )
+      while (!isNumber(itemMonthExpenses[i])) {
+        itemMonthExpenses[i] = parseFloat(prompt("Во сколько это обойдется?"));
+      }
 
-const getExpensesMonth = () => {
-  let sum = 0;
-  for (let i = 0; i < 2; i++) {
-    expenses[i] = prompt("Введите обязательную статью расходов", "Кредит");
+      appData.expenses[expensesKey] = itemMonthExpenses[i];
+    }
+  },
+  getExpensesMonth: function() {
+    let sum = 0;
 
-    while (!isNumber(itemMonthExpenses[i])) {
-      itemMonthExpenses[i] = parseFloat(prompt("Во сколько это обойдется?"));
-    } //Проверка на число
+    for (let key in appData.expenses) {
+      sum += appData.expenses[key];
+    }
 
-    sum += itemMonthExpenses[i];
+    appData.expensesMonth = sum;
+  },
+  getBudget: function() {
+    appData.budgetMonth = appData.budget - appData.expensesMonth;
+  },
+  getStatusIncome: function() {
+    if (appData.budgetDay >= 1200) {
+      return "У вас Высокий уровень дохода";
+    } else if (appData.budgetDay < 1200 && appData.budgetDay >= 600) {
+      return "У вас средний уровень дохода";
+    } else if (appData.budgetDay < 600 && appData.budgetDay >= 0) {
+      return "К сожалению у вас низкий уровень доходов";
+    } else {
+      return "Что-то пошло не так";
+    }
+  },
+  getTargetMonth: function() {
+    return appData.mission / appData.budgetMonth;
   }
-  return sum;
 };
 
-let expensesMonth = getExpensesMonth();
+appData.asking();
+appData.getExpensesMonth();
+appData.getBudget();
 
-const getAccumulatedMonth = (expenses, allMoney) => {
-  let accum = allMoney - expenses;
+appData.budgetDay = Math.floor(appData.budgetMonth / 30);
 
-  return accum;
-};
+let countMonth = Math.ceil(appData.getTargetMonth()); //Количество месяцев накопления
 
-let accumulatedMonth = getAccumulatedMonth(expensesMonth, money);
+console.log("Ваш уровень дохода: ", appData.getStatusIncome());
 
-let budgetDay = Math.floor(accumulatedMonth / 30);
-
-const getStatusIncome = () => {
-  if (budgetDay >= 1200) {
-    return "У вас Высокий уровень дохода";
-  } else if (budgetDay < 1200 && budgetDay >= 600) {
-    return "У вас средний уровень дохода";
-  } else if (budgetDay < 600 && budgetDay >= 0) {
-    return "К сожалению у вас низкий уровень доходов";
-  } else {
-    return "Что-то пошло не так";
-  }
-};
-
-const getTargetMonth = (target, accumMonth) => {
-  let result = target / accumMonth;
-
-  return result;
-};
-
-let countMonth = Math.ceil(getTargetMonth(mission, accumulatedMonth)); //Количество месяцев накопления
-let informCountMonth = "";
-
-//console.log('getExpensesMonth(amount1, amount2): ', getExpensesMonth(amount1, amount2));
-
-console.log("Ваш уровень дохода: ", getStatusIncome());
-
-console.log(showTypeOf(money, income, deposit));
-
-console.log(addExpenses.length + " символа");
+console.log(appData.addExpenses.length + " символа");
 
 console.log(
-  "Период равен " + period + " месяцев",
-  "\nЦель заработать " + mission + " рублей/долларов/юаней/гривен"
+  "Период равен " + appData.period + " месяцев",
+  "\nЦель заработать " + appData.mission + " рублей/долларов/юаней/гривен"
 );
+console.log("Сумма обязательных расходов " + appData.expensesMonth);
 
-console.log("Сумма обязательных расходов " + expensesMonth);
-
-let addExpensesLower = addExpenses.toLowerCase();
-console.log("Обязательные расходы " + addExpensesLower.split(", "));
-
-console.log("Бюджет на месяц: ", accumulatedMonth);
+console.log("Бюджет на месяц: ", appData.budgetMonth);
 
 if (countMonth < 0) {
   console.log("Цель не будет достигнута");
@@ -105,4 +101,4 @@ if (countMonth < 0) {
   console.log("Цель будет достигнута через " + countMonth + " месяц(а)");
 }
 
-console.log("Бюджет на день: " + budgetDay);
+console.log("Бюджет на день: " + appData.budgetDay);
