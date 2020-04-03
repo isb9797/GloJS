@@ -58,6 +58,7 @@ let appData = {
   },
   getBudget: function() {
     appData.budgetMonth = appData.budget - appData.expensesMonth;
+    appData.budgetDay = Math.floor(appData.budgetMonth / 30);
   },
   getStatusIncome: function() {
     if (appData.budgetDay >= 1200) {
@@ -72,6 +73,14 @@ let appData = {
   },
   getTargetMonth: function() {
     return appData.mission / appData.budgetMonth;
+  },
+  dataOut: function(){
+    console.log("Наша программа включает в себя данные: \n\n");
+    
+
+    for (let key in appData){
+      console.log(key + ": " +appData[key]);
+    }
   }
 };
 
@@ -79,7 +88,7 @@ appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
 
-appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+console.log(appData.dataOut());
 
 let countMonth = Math.ceil(appData.getTargetMonth()); //Количество месяцев накопления
 
