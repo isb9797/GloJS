@@ -169,8 +169,36 @@ let appData = {
   }
 };
 
+let frontData = {
+  execute: document.getElementById('start'),
+  addIncomeBtnOne: document.getElementsByTagName('button')[0],
+  addIncomeBtnTwo: document.getElementsByTagName('button')[1],
+  depositCheckBox: document.querySelector('#deposit-check'),
+  addIncomeInputOne: document.querySelectorAll('.additional_income-item')[0],
+  addIncomeInputTwo: document.querySelectorAll('.additional_income-item')[1],
+  //Предполагается использование цикла, но пока об этом думать рановато)
+  outValue1: document.querySelector('.budget_month-value'),
+  outValue2: document.querySelector('.budget_day-value'),
+  outValue3: document.querySelector('.expenses_month-value'),
+  outValue4: document.querySelector('.additional_income-value'),
+  outValue5: document.querySelector('.additional_expenses-value'),
+  outValue6: document.querySelector('.income_period-value'),
+  outValue7: document.querySelector('.target_month-value'),
 
+  inputSalaryAmount: document.querySelector('.salary-amount'),
 
+  inputAdditionalIncomeItemOne: document.querySelectorAll('.additional_income-item')[0],
+  inputAdditionalIncomeItemTwo: document.querySelectorAll('.additional_income-item')[1],
+
+  inputExpencesTitle: document.querySelectorAll('.expenses-title')[1],
+  inputExpencesAmount: document.querySelector('.expenses-amount'),
+
+  inputAdditionalExpencesItem: document.querySelector('.additional_expenses-item'),
+  inputTargetAmount: document.querySelector('.target-amount'),
+
+  inputRange: document.querySelector('[type="range"]')
+
+};
 
 appData.asking();
 appData.getInfoDeposit();
