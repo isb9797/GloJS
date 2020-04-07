@@ -33,21 +33,26 @@ let appData = {
   moneyDeposit: 0,
   mission: 1000000,
   period: 12,
+  
   asking: function() {
     
     if (confirm('Есть ли у вас доп заработок?')){
      
-      let itemIncome = prompt('Какой доп заработок?', 'Фриланс');
+      let itemIncome;
 
-      let cashIncome = +prompt('Сколько в месяц?', '25000');
-      if (isNumber(itemIncome)){
-        this.asking();
+      do {
+        itemIncome =  prompt('Какой доп заработок?', 'Фриланс');
       }
+      while(isNumber(itemIncome));
 
-      if (!isNumber(cashIncome)){
-        this.asking();
+      let cashIncome;
+
+      do {
+        cashIncome =  +prompt('Сколько в месяц?', '25000');
       }
+      while(!isNumber(cashIncome));
       
+  
 
       
       appData.income[itemIncome] = cashIncome;
@@ -71,16 +76,18 @@ let appData = {
 
    
     for (let i = 0; i < 2; i++) {
-      expensesKey = prompt("Введите обязательную статью расходов", "Кредит");
+      //expensesKey = prompt("Введите обязательную статью расходов", "Кредит");
       
-      while (isNumber(expensesKey)) {
+      do {
         expensesKey = prompt("Введите обязательную статью расходов", "Кредит");
       }
+      while (isNumber(expensesKey)); 
       
-
-      while (!isNumber(itemMonthExpenses[i])) {
+      
+      do{
         itemMonthExpenses[i] = parseFloat(prompt("Во сколько это обойдется?"));
       }
+      while (!isNumber(itemMonthExpenses[i]));
 
       appData.expenses[expensesKey] = itemMonthExpenses[i];
       
@@ -127,27 +134,49 @@ let appData = {
   getInfoDeposit: function(){
     if (appData.deposit){
       
-      appData.percentDeposit = +prompt('Какой годовой процент?', '10');
-      while(!isNumber(appData.percentDeposit)){
-        appData.percentDeposit = +prompt('Какой годовой процент?', '10');
+      //let regExp = new RegExp('/[0-9]/g'); Задел на будущее
+      let percent;
+      do{
+       percent = +prompt('Какой годовой процент?', 10);
+       appData.percent = percent;
       }
+      while (!isNumber(percent));
+        
+      
 
-      appData.moneyDeposit = +prompt('Какая сумма заложена?', '10000');
-      while(!isNumber(appData.moneyDeposit)){
-        appData.moneyDeposit = +prompt('Какая сумма заложена?', '10000');
+      let moneyDeposit;
+      
+      do {
+        moneyDeposit = +prompt('Какая сумма заложена?', '10000');
+        appData.moneyDeposit = moneyDeposit;
       }
+      while(!isNumber(moneyDeposit));
+        
       
     }
   },
   calcSavedMoney: function(){
     return appData.budgetMonth * appData.period;
+  },
+  regExpCheck: function(str, regExp){
+    // data = 'Привет мир';
+    // regExp = /[а-яёА-ЯЁ]/;
+
+    let found = str.match(regExp);
+    
+    return found;
+
   }
 };
 
+
+
+
 appData.asking();
+appData.getInfoDeposit();
 appData.getExpensesMonth();
 appData.getBudget();
-appData.getInfoDeposit();
+
 
 
 
