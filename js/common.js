@@ -6,6 +6,7 @@ let isNumber = (n) => {
 };
 
 let execute = document.getElementById("start"),
+  cancel = document.querySelector('#cancel'),
   incomeBtnAdd = document.getElementsByTagName("button")[0],
   expensesBtnAdd = document.getElementsByTagName("button")[1],
   depositCheckBox = document.querySelector("#deposit-check"),
@@ -45,17 +46,58 @@ let appData = {
   moneyDeposit: 0,
 
   start: function () {
-    appData.budget = +inputSalaryAmount.value;
+    this.budget = +inputSalaryAmount.value;
 
-    appData.getExpenses();
-    appData.getIncome();
-    appData.getExpensesMonth();
-    appData.getAddExpenses();
-    appData.getAddIncome();
-    appData.getBudget();
+    this.getExpenses();
+    this.getIncome();
+    this.getExpensesMonth();
+    this.getAddExpenses();
+    this.getAddIncome();
+    this.getBudget();
 
-    appData.showResult();
+    this.showResult();
+
+    let inputsLeft = document.querySelectorAll('input[type=text]');
+
+    inputsLeft.forEach(function(item){
+      item.disabled = true;
+    });
+
+    execute.style.display = 'none';
+    cancel.style.display = 'block';
+    // cancel.addEventListener("click", this.reset);
   },
+  reset: function() {
+    execute.style.display = 'block';
+    cancel.style.display = 'none';
+
+    inputSalaryAmount.value = '';
+    budgetMonthValue.value = 0 ;    
+    budgetDayValue.value =  0;
+    expensesMonthValue.value = 0;
+    additionalExpensesValue.value = '';
+    additionalIncomeValue.value = '';
+    targetMonthValue.value = 0;
+    periodSelect.removeEventListener("input", this.showResult);
+    incomePeriodValue.value = 0;
+
+    this.budget = 0;
+    this.budgetMonth = 0;
+    this.budgetDay = 0;
+    this.expensesMonth = 0;
+    this.addExpenses = [];
+    this.addIncome = [];
+    incomePeriodValue.value = 0;
+
+    let inputsLeft = document.querySelectorAll('input[type=text]');
+
+    inputsLeft.forEach(function(item){
+      item.disabled = false;
+    });
+    execute.disabled = true;
+
+  },
+  
   showResult: function () {
     budgetMonthValue.value = appData.budgetMonth;
     budgetDayValue.value = appData.budgetDay;
@@ -65,6 +107,7 @@ let appData = {
     targetMonthValue.value = Math.ceil(appData.getTargetMonth());
     periodSelect.addEventListener("input", this.showResult);
     incomePeriodValue.value = appData.calcPeriod();
+    
   },
   getRange: function () {
     periodAmount.textContent = periodSelect.value;
@@ -201,7 +244,17 @@ inputSalaryAmount.addEventListener('input', () => {
   }
 });
 
-execute.addEventListener("click", appData.start);
+
+let start = function(){
+  appData.start.apply(appData);
+};
+let reset = function(){
+  appData.reset.apply(appData);
+};
+
+execute.addEventListener("click", start);
+cancel.addEventListener("click", reset);
+
 
 expensesBtnAdd.addEventListener("click", appData.addExpensesBlock);
 incomeBtnAdd.addEventListener("click", appData.addIncomeBlock);
