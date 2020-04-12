@@ -71,14 +71,28 @@ let appData = {
   },
   addExpensesBlock: function () {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
+    
+    let textNull = cloneExpensesItem.querySelectorAll('input[type="text"]');
+    textNull.forEach(function(item){
+      item.value = '';
+    });
+    
     expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesBtnAdd);
     expensesItems = document.querySelectorAll(".expenses-items");
+
     if (expensesItems.length === 3) {
       expensesBtnAdd.style.display = "none";
     }
   },
   addIncomeBlock: function () {
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
+    
+
+    let textNull = cloneIncomeItem.querySelectorAll('input[type="text"]');
+    textNull.forEach(function(item){
+      item.value = '';
+    });
+    
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomeBtnAdd);
     incomeItems = document.querySelectorAll(".income-items");
     if (incomeItems.length === 3) {
