@@ -220,6 +220,32 @@ execute.addEventListener("click", appData.start);
 expensesBtnAdd.addEventListener("click", appData.addExpensesBlock);
 incomeBtnAdd.addEventListener("click", appData.addIncomeBlock);
 
+let textInputs = document.querySelectorAll('input[placeholder="Наименование"]');
+let numInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+
+//Проверка вводимых знаков (Работает частично)
+textInputs.forEach(function(item){
+  item.addEventListener('input', function(){
+    let regExp = /[а-яА-ЯёЁ]/;
+  
+    
+    if (!item.value.match(regExp) && item.value !== ''){
+      item.value = '';
+    }
+  });
+});
+
+numInputs.forEach(function(item){
+  item.addEventListener('input', function(){
+    let regExp = /[0-9]/;
+ 
+    
+    if (!item.value.match(regExp) ){
+      item.value = '';
+    }
+  });
+});
+
 periodSelect.addEventListener("input", appData.getRange);
 
 let countMonth = Math.ceil(appData.getTargetMonth()); //Количество месяцев накопления
