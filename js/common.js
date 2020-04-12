@@ -71,6 +71,17 @@ let appData = {
     execute.style.display = 'block';
     cancel.style.display = 'none';
 
+    expensesItems.forEach(function(item){
+      item.querySelectorAll('input[type="text"]').forEach(function(item){
+        item.value = '';
+      });
+    });
+
+    incomeItems.forEach(function(item){
+      item.querySelectorAll('input[type="text"]').forEach(function(item){
+        item.value = '';
+      });
+    });
     inputSalaryAmount.value = '';
     budgetMonthValue.value = 0 ;    
     budgetDayValue.value =  0;
@@ -114,14 +125,28 @@ let appData = {
   },
   addExpensesBlock: function () {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
+    
+    let textNull = cloneExpensesItem.querySelectorAll('input[type="text"]');
+    textNull.forEach(function(item){
+      item.value = '';
+    });
+    
     expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesBtnAdd);
     expensesItems = document.querySelectorAll(".expenses-items");
+
     if (expensesItems.length === 3) {
       expensesBtnAdd.style.display = "none";
     }
   },
   addIncomeBlock: function () {
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
+    
+
+    let textNull = cloneIncomeItem.querySelectorAll('input[type="text"]');
+    textNull.forEach(function(item){
+      item.value = '';
+    });
+    
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomeBtnAdd);
     incomeItems = document.querySelectorAll(".income-items");
     if (incomeItems.length === 3) {
@@ -227,10 +252,12 @@ let appData = {
   calcPeriod: function () {
     return appData.budgetMonth * periodSelect.value;
   },
-  regExpCheck: function (str, regExp) {
-    let found = str.match(regExp);
+  regExpCheck: function (regExp) {
+    
 
-    return found;
+    if (this.value !== '' && this.value.match(regExp) === null){
+      this.value = '';
+    }
   },
 };
 
@@ -258,6 +285,34 @@ cancel.addEventListener("click", reset);
 
 expensesBtnAdd.addEventListener("click", appData.addExpensesBlock);
 incomeBtnAdd.addEventListener("click", appData.addIncomeBlock);
+
+let textInputs = document.querySelectorAll('input[placeholder="Наименование"]');
+let numInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+
+//Проверка вводимых знаков (Работает частично)
+textInputs.forEach(function(item){
+  item.addEventListener('input', function(){
+    let regExp = /[а-яА-ЯёЁ]/;
+  
+    
+    if (!item.value.match(regExp) && item.value !== ''){
+      item.value = '';
+    }
+  });
+});
+
+numInputs.forEach(function(item){
+  item.addEventListener('input', function(){
+    let regExp = /[0-9]/;
+ 
+    
+    if (!item.value.match(regExp) ){
+      item.value = '';
+    }
+  });
+});
+
+
 
 periodSelect.addEventListener("input", appData.getRange);
 
