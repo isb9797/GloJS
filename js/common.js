@@ -1,5 +1,5 @@
 "use strict";
-//Урок 12
+//Урок 14
 
 let isNumber = (n) => {
   return !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
