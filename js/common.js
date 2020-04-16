@@ -1,11 +1,12 @@
 "use strict";
 //Урок 15
 
+//Проверка на число
 const isNumber = (n) => {
   return !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
 };
 
-let execute = document.getElementById("start"),
+const execute = document.getElementById("start"),
   cancel = document.querySelector("#cancel"),
   incomeBtnAdd = document.getElementsByTagName("button")[0],
   expensesBtnAdd = document.getElementsByTagName("button")[1],
@@ -22,13 +23,14 @@ let execute = document.getElementById("start"),
   targetMonthValue = document.querySelector(".target_month-value"),
   inputSalaryAmount = document.querySelector(".salary-amount"),
   additionalIncomeItem = document.querySelectorAll(".additional_income-item"),
-  incomeItems = document.querySelectorAll(".income-items"),
   inputExpencesTitle = document.querySelectorAll(".expenses-title")[1],
-  expensesItems = document.querySelectorAll(".expenses-items"),
   additionalExpencesItem = document.querySelector(".additional_expenses-item"),
   targetAmount = document.querySelector(".target-amount"),
   periodSelect = document.querySelector('[type="range"]'),
   periodAmount = document.querySelector(".period-amount");
+
+let expensesItems = document.querySelectorAll(".expenses-items"),
+  incomeItems = document.querySelectorAll(".income-items");
 
 //Создаем класс AppData с Конструктором свойств
 class AppData {
