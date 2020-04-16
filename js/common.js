@@ -11,7 +11,6 @@ let execute = document.getElementById("start"),
   expensesBtnAdd = document.getElementsByTagName("button")[1],
   depositCheckBox = document.querySelector("#deposit-check"),
   addIncomeItem = document.querySelectorAll(".additional_income-item"),
-  //Предполагается использование цикла, но пока об этом думать рановато)
   budgetMonthValue = document.querySelector(".budget_month-value"),
   budgetDayValue = document.querySelector(".budget_day-value"),
   expensesMonthValue = document.querySelector(".expenses_month-value"),
@@ -50,6 +49,7 @@ class AppData {
 
   //Добавляем методы класса
 
+  //Старт программы после ввода месячного дохода
   start() {
     this.budget = +inputSalaryAmount.value;
 
@@ -64,14 +64,16 @@ class AppData {
 
     const inputsLeft = document.querySelectorAll("input[type=text]");
 
-    inputsLeft.forEach(function (item) {
+    inputsLeft.forEach((item) => {
       item.disabled = true;
     });
 
     execute.style.display = "none";
     cancel.style.display = "block";
+    periodSelect.removeAttribute("disabled");
   }
 
+  //Сброс программы
   reset() {
     execute.style.display = "block";
     cancel.style.display = "none";
@@ -83,6 +85,22 @@ class AppData {
       });
     });
 
+    const newEl = () => {
+      document.querySelectorAll(".newEl").forEach((item) => {
+        item.remove();
+      });
+    };
+
+    const check = document.querySelector("#deposit-check");
+    if (check.checked) {
+      check.checked = !check.checked;
+    }
+
+    periodSelect.value = 0;
+    periodAmount.textContent = 1;
+
+    newEl();
+    periodSelect.setAttribute("disabled", true);
     document.querySelectorAll('input[type="text"]').forEach((item) => {
       item.value = "";
     });
@@ -112,7 +130,7 @@ class AppData {
     });
     execute.disabled = true;
   }
-
+  //Вывод результатов вычеслений на экран
   showResult() {
     budgetMonthValue.value = this.budgetMonth;
     budgetDayValue.value = this.budgetDay;
@@ -123,14 +141,17 @@ class AppData {
 
     incomePeriodValue.value = this.calcPeriod();
   }
+  //Получение значения ползунка периодла и передача значения
   getRange() {
     periodAmount.textContent = periodSelect.value;
   }
+  //Метод добавления доп расходов
   addExpensesBlock() {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
+    cloneExpensesItem.classList.add("newEl");
 
-    let textNull = cloneExpensesItem.querySelectorAll('input[type="text"]');
-    textNull.forEach(function (item) {
+    const textNull = cloneExpensesItem.querySelectorAll('input[type="text"]');
+    textNull.forEach((item) => {
       item.value = "";
     });
 
@@ -141,9 +162,10 @@ class AppData {
       expensesBtnAdd.style.display = "none";
     }
   }
+  //Метода добавления доп доходовие
   addIncomeBlock() {
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
-
+    cloneIncomeItem.classList.add("newEl");
     let textNull = cloneIncomeItem.querySelectorAll('input[type="text"]');
     textNull.forEach((item) => {
       item.value = "";
@@ -155,6 +177,7 @@ class AppData {
       incomeBtnAdd.style.display = "none";
     }
   }
+  //Получение расходов
   getExpenses() {
     expensesItems.forEach((item) => {
       let itemExpenses = item.querySelector(".expenses-title").value;
@@ -165,6 +188,7 @@ class AppData {
       }
     });
   }
+  //Получение доходов
   getIncome() {
     incomeItems.forEach((item) => {
       let itemIncome = item.querySelector(".income-title").value;
@@ -178,6 +202,7 @@ class AppData {
       this.incomeMonth += +this.income[key];
     }
   }
+  //Получение доп расходов
   getAddExpenses() {
     let addExpenses = additionalExpencesItem.value.split(",");
     addExpenses.forEach((item) => {
@@ -187,6 +212,8 @@ class AppData {
       }
     });
   }
+
+  //Получение доп доходов
   getAddIncome() {
     additionalIncomeItem.forEach((item) => {
       let itemValue = item.value.trim();
@@ -195,6 +222,7 @@ class AppData {
       }
     });
   }
+  //Получение расходов за месяц
   getExpensesMonth() {
     let sum = 0;
 
@@ -204,10 +232,13 @@ class AppData {
 
     this.expensesMonth = +sum;
   }
+
+  //Получение бюджета
   getBudget() {
     this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
     this.budgetDay = Math.floor(this.budgetMonth / 30);
   }
+  //Временно неиспользуемая функция оценки доходов
   getStatusIncome() {
     if (this.budgetDay >= 1200) {
       return "У вас Высокий уровень дохода";
@@ -219,9 +250,11 @@ class AppData {
       return "Что-то пошло не так";
     }
   }
+  //Получение цели на месяц
   getTargetMonth() {
     return targetAmount.value / this.budgetMonth;
   }
+  //Временно неиспользуемая функция вывода данных программы (Удалить)
   dataOut() {
     console.log("Наша программа включает в себя данные: \n\n");
 
@@ -230,6 +263,7 @@ class AppData {
     }
   }
 
+  //Временно неиспользуемая функция получения депозита
   getInfoDeposit() {
     if (this.deposit) {
       //let regExp = new RegExp('/[0-9]/g'); Задел на будущее
@@ -247,18 +281,22 @@ class AppData {
       } while (!isNumber(moneyDeposit));
     }
   }
+  //Расчет накоплений
   calcSavedMoney() {
     return this.budgetMonth * periodAmount;
   }
+  //Расчет периода
   calcPeriod() {
     return this.budgetMonth * periodSelect.value;
   }
+
+  //Временно неиспользуемая функция обработки регулярок
   regExpCheck(regExp) {
     if (this.value !== "" && this.value.match(regExp) === null) {
       this.value = "";
     }
   }
-
+  //Отслеживание событий на странице
   eventsListeners() {
     let _this = this;
     inputSalaryAmount.addEventListener("input", () => {
