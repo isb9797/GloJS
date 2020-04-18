@@ -1,5 +1,5 @@
 //Урок 16.1
-
+"use strict";
 //Проверка на число
 //сonst isNumber = n => !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
 
