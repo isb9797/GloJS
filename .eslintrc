@@ -41,10 +41,10 @@
             "error",
             "always"
         ],
-        "strict": [
-            "error",
-            "global"
-        ],
+        // "strict": [
+        //     "error",
+        //     "global"
+        // ],
         "brace-style": [
             "error",
             "1tbs",

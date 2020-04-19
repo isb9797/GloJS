@@ -8,7 +8,6 @@ const execute = document.getElementById("start"),
 	incomeBtnAdd = document.getElementsByTagName("button")[0],
 	expensesBtnAdd = document.getElementsByTagName("button")[1],
 	depositCheckBox = document.querySelector("#deposit-check"),
-	//addIncomeItem = document.querySelectorAll(".additional_income-item"),
 	budgetMonthValue = document.querySelector(".budget_month-value"),
 	budgetDayValue = document.querySelector(".budget_day-value"),
 	expensesMonthValue = document.querySelector(".expenses_month-value"),
@@ -304,6 +303,7 @@ class AppData {
 			depositPercent.style.display = "inline-block";
 		} else {
 			depositPercent.value = valueSelect;
+			depositPercent.style.display = "none";
 		}
 	}
 	//Вывод полей депозита
