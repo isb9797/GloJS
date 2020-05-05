@@ -226,10 +226,10 @@ let numInputs = document.querySelectorAll('input[placeholder="Сумма"]');
 //Проверка вводимых знаков (Работает частично)
 textInputs.forEach(function(item){
   item.addEventListener('input', function(){
-    let regExp = /[а-яА-ЯёЁ]/;
+    let regExp = /[а-яА-ЯёЁ]$/g;
   
     
-    if (!item.value.match(regExp) && item.value !== ''){
+    if (!regExp.test(item.value)){
       item.value = '';
     }
   });
@@ -237,10 +237,10 @@ textInputs.forEach(function(item){
 
 numInputs.forEach(function(item){
   item.addEventListener('input', function(){
-    let regExp = /[0-9]/;
+    let regExp = /[0-9]$/g;
  
     
-    if (!item.value.match(regExp) ){
+    if (!regExp.test(item.value)){
       item.value = '';
     }
   });
