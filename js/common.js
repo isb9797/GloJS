@@ -223,7 +223,7 @@ incomeBtnAdd.addEventListener("click", appData.addIncomeBlock);
 let textInputs = document.querySelectorAll('input[placeholder="Наименование"]');
 let numInputs = document.querySelectorAll('input[placeholder="Сумма"]');
 
-//Проверка вводимых знаков (Работает частично)
+//! Проверка вводимых знаков 
 textInputs.forEach(function(item){
   item.addEventListener('input', function(){
     let regExp = /[а-яА-ЯёЁ]$/g;
