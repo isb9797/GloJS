@@ -87,7 +87,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const target = event.target;
     
     const left = () => {
-      left = countLeft;
       countLeft+=10;
       square.style.left = countLeft + 'px';
     }
