@@ -1,2 +1,2 @@
 # GloJS
-This repository for my training in Glo Academy on JS course
+Данный калькулятор расходов и доходов был создан в процессе изучения JS в "Академии Верстки"
